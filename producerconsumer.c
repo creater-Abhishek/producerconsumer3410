@@ -20,9 +20,8 @@ sem_t full, empty;
 void* producer(void *ptr) {
 	buffer_item item;
 	while(1) {
-		//producer sleep for random amount of time
-		int rNum = rand() % 10 + 1;
-		sleep(rNum);
+		// sleep each iteration
+		sleep(1000);
 
 		//generate random number to insert
 		item = rand();
@@ -38,8 +37,10 @@ void* producer(void *ptr) {
 		else {
          printf("producer produced %d\n", item);
 		}
+
 		/* release the mutex lock */
 		pthread_mutex_unlock(&mutex);
+
 		/* signal full */
 		sem_post(&full);
    }
@@ -50,7 +51,7 @@ void* consumer(void *ptr) {
 
 	while(1) {
 		/* sleep for a random period of time */
-		int rNum = rand() %10 + 1;
+		int rNum = rand() % 10 + 1;
 		sleep(rNum);
 
 		/* aquire the full lock */
@@ -74,11 +75,10 @@ void* consumer(void *ptr) {
 int main(int argc, char *argv[]) {
 
 	printf("buffer size: %i\n", BUFFER_SIZE);
-
 	/* 1. Get command line arguments argv[1],argv[2],argv[3] */
-	if (argc != 3) {
+	if (argc != 4) {
 		printf("Incorrect number of aguments. Usage:\n");
-		printf("producerconsumer <time to sleep before terminating> <number of producers> <number of consumers\n");
+		printf("producerconsumer <time to sleep before terminating> <number of producers> <number of consumers>\n");
 		return -1;
 	}
 
@@ -89,26 +89,30 @@ int main(int argc, char *argv[]) {
 
 	//create mutex
    pthread_mutex_init(&mutex, NULL);
-
    //create 'full' semaphore == 0
-   sem_init(&full, 0, 0);
+	full = (sem_t) sem_open("full", O_CREAT);
+	printf("created full semaphore %d\n", full);
 
    //create 'empty' semaphore == BUFFER_SIZE
-   sem_init(&empty, 0, BUFFER_SIZE);
+	empty = (sem_t) sem_open("empty", O_CREAT);
+	printf("created empty semaphore %d\n", empty);
 
    //initialize buffer counter
    count = 0;	
 	
 	/* 3. Create producer thread(s) */
 	/* 4. Create consumer thread(s) */
+	// TODO create multple threads
+
 	pthread_t ptid, ctid;
 	pthread_create(&ptid, NULL, producer, NULL);
 	pthread_create(&ctid, NULL, consumer, NULL);
 	
 	/* 5. Sleep */
-	sleep(time);
+	sleep(timeToSleep);
 
 	/* 6. Exit */
+	return 0;
 }
 
 int insert_item(buffer_item item) {
