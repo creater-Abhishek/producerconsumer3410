@@ -20,8 +20,9 @@ sem_t full, empty;
 void* producer(void *ptr) {
 	buffer_item item;
 	while(1) {
-		// sleep each iteration
-		sleep(1000);
+		/* sleep for a random period of time */
+		int rNum = rand() % 10 + 1;
+		sleep(rNum);
 
 		//generate random number to insert
 		item = rand();
@@ -89,7 +90,8 @@ int main(int argc, char *argv[]) {
 
 	//create mutex
    pthread_mutex_init(&mutex, NULL);
-   //create 'full' semaphore == 0
+
+	//create 'full' semaphore == 0
 	full = (sem_t) sem_open("full", O_CREAT);
 	printf("created full semaphore %d\n", full);
 
