@@ -22,7 +22,7 @@ void* producer(void *ptr) {
 	buffer_item item;
 	while(1) {
 		/* sleep for a random period of time */
-		int rNum = 5;//rand() % 10 + 10;
+		int rNum = 5;//rand() % 10 + 10; TODO make these randoms that make sense
 		sleep(rNum);
 
 		//generate random number to insert
