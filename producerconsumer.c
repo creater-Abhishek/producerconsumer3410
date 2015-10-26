@@ -37,7 +37,7 @@ void* producer(void *ptr) {
 			fprintf(stderr, " Producer report error condition %d\n", errno);
 		}
 		else {
-			printf("produced %d succesfully. wait=%d full=%d mutex=%d\n", item, wait, full, mutex);
+			printf("produced %d succesfully. wait=%d full=%d mutex=%d\n", item, &wait, &full, mutex);
 		}
 
 		/* release the mutex lock */
