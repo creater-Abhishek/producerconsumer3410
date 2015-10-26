@@ -37,7 +37,7 @@ void* producer(void *ptr) {
 			fprintf(stderr, " Producer report error condition %d\n", errno);
 		}
 		else {
-			printf("produced %d succesfully. wait=%d full=%d mutex=%d\n", item, &wait, &full, mutex);
+			printf("produced %d succesfully. mutex=%d\n", item, mutex);
 		}
 
 		/* release the mutex lock */
@@ -64,7 +64,7 @@ void* consumer(void *ptr) {
 			fprintf(stderr, "Consumer report error condition %d\n", errno);
 		}
 		else {
-			printf("consumed %d succesfully. wait=%d full=%d mutex=%d\n", item, wait, full, mutex);
+			printf("produced %d succesfully. mutex=%d\n", item, mutex);
 		}
 		/* release the mutex lock */
 		pthread_mutex_unlock(&mutex);
