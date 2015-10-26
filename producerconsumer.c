@@ -22,7 +22,7 @@ void* producer(void *ptr) {
 	buffer_item item;
 	while(1) {
 		/* sleep for a random period of time */
-		int rNum = rand() % 10 + 10;
+		int rNum = 5;//rand() % 10 + 10;
 		sleep(rNum);
 
 		//generate random number to insert
@@ -30,9 +30,10 @@ void* producer(void *ptr) {
 
 		//wait to acquire sem
 		sem_wait(&empty);
+
 		//acquire mutex
 		pthread_mutex_lock(&mutex);
-		printf("mutex %d\n", mutex);
+		printf("mutex aquired: mutex=%d\n", mutex);
 
 		if (insert_item(item) != 0) {
 			fprintf(stderr, " Producer report error condition %d\n", errno);
@@ -43,7 +44,8 @@ void* producer(void *ptr) {
 
 		/* release the mutex lock */
 		pthread_mutex_unlock(&mutex);
-		printf("mutex %d\n", mutex);
+		printf("mutex released: mutex=%d\n", mutex);
+
 		/* signal full */
 		sem_post(&full);
    }
@@ -54,7 +56,7 @@ void* consumer(void *ptr) {
 
 	while(1) {
 		/* sleep for a random period of time */
-		int rNum = rand() % 10 + 1000;
+		int rNum = 10; //rand() % 10 + 1000;
 		sleep(rNum);
 
 		/* aquire the full lock */
