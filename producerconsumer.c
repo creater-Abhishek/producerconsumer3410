@@ -25,7 +25,7 @@ void* producer(void *ptr) {
 		sleep(rNum);
 
 		//generate random number to insert
-		item = rand();
+		item = rand() / 1000000;
 
 		//wait to acquire sem
 		sem_wait(&empty);
@@ -118,7 +118,7 @@ int main(int argc, char *argv[]) {
 }
 
 int insert_item(buffer_item item) {
-	printf("inserting item: %i", item);
+	printf("inserting item: %i\n", item);
    if(count < BUFFER_SIZE) {
       buffer[count] = item;
       count++;
@@ -130,7 +130,7 @@ int insert_item(buffer_item item) {
 }
 
 int remove_item(buffer_item *item) {
-	printf("removing item: %i", item);
+	printf("removing item: %i\n", item);
    if(count > 0) {
       *item = buffer[(count-1)];
       count--;
