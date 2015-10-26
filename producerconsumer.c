@@ -1,15 +1,14 @@
 //
 // Created by Steven Lyall on 15-10-26.
 //
-<<<<<<< HEAD
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <pthread.h>
 #include <semaphore.h>
-=======
-
 #include <stdio.h>
->>>>>>> 583657124da6cddb249dc04c6e5ec429261e493b
+#include <unistd.h>
+
 #include "buffer.h"
 
 buffer_item buffer[BUFFER_SIZE];
@@ -75,17 +74,24 @@ void* consumer(void *ptr) {
 	}
 }
 
-int main(int argc, char *argv[]) {
-<<<<<<< HEAD
-	printf("buffer size: %i\n", BUFFER_SIZE);
-	/* 1. Get command line arguments argv[1],argv[2],argv[3] */
-	int time = atoi(argv[1]);
-	
-	//number of producer and consumer threads
-	int pro_threads = atoi(argv[2]);
-	int con_threads = atoi(argv[3]);
 
-   //create mutex
+int main(int argc, char *argv[]) {
+
+	printf("buffer size: %i\n", BUFFER_SIZE);
+
+	/* 1. Get command line arguments argv[1],argv[2],argv[3] */
+	if (argc != 3) {
+		printf("Incorrect number of aguments. Usage:\n");
+		printf("producerconsumer <time to sleep before terminating> <number of producers> <number of consumers\n");
+		return -1;
+	}
+
+	int timeToSleep = argv[1];
+	int numProducerThreads = argv[2];
+	int numConsumerThreads = argv[3];
+
+
+	//create mutex
    pthread_mutex_init(&mutex, NULL);
 
    //create 'full' semaphore == 0
@@ -132,26 +138,3 @@ int remove_item(buffer_item *item) {
       return -1;
    }
 }
-
-
-
-=======
-/* 1. Get command line arguments argv[1],argv[2],argv[3] */
-    if (argc != 3) {
-        printf("Incorrect number of aguments. Usage:\n");
-        printf("producerconsumer <time to sleep before terminating> <number of producers> <number of consumers\n");
-        return -1;
-    }
-
-    int timeToSleep = argv[1];
-    int numProducerThreads = argv[2];
-    int numConsumerThreads = argv[3];
-
-/* 2. Initialize buffer */
-
-/* 3. Create producer thread(s) */
-/* 4. Create consumer thread(s) */
-/* 5. Sleep */
-/* 6. Exit */
-}
->>>>>>> 583657124da6cddb249dc04c6e5ec429261e493b
