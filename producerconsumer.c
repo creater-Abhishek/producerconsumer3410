@@ -32,6 +32,7 @@ void* producer(void *ptr) {
 		sem_wait(&empty);
 		//acquire mutex
 		pthread_mutex_lock(&mutex);
+		printf("mutex %d\n", mutex);
 
 		if (insert_item(item) != 0) {
 			fprintf(stderr, " Producer report error condition %d\n", errno);
@@ -42,7 +43,7 @@ void* producer(void *ptr) {
 
 		/* release the mutex lock */
 		pthread_mutex_unlock(&mutex);
-
+		printf("mutex %d\n", mutex);
 		/* signal full */
 		sem_post(&full);
    }
