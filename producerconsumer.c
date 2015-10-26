@@ -4,6 +4,7 @@
 #include <semaphore.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <sys/errno.h>
 
 #include "buffer.h"
 
@@ -21,7 +22,7 @@ void* producer(void *ptr) {
 	buffer_item item;
 	while(1) {
 		/* sleep for a random period of time */
-		int rNum = rand() % 10 + 1;
+		int rNum = rand() % 10 + 10;
 		sleep(rNum);
 
 		//generate random number to insert
@@ -32,7 +33,7 @@ void* producer(void *ptr) {
 		//acquire mutex
 		pthread_mutex_lock(&mutex);
 
-		if(insert_item(item)) {
+		if (insert_item(item) != 0) {
 			fprintf(stderr, " Producer report error condition\n");
 		}
 		else {
@@ -52,14 +53,14 @@ void* consumer(void *ptr) {
 
 	while(1) {
 		/* sleep for a random period of time */
-		int rNum = rand() % 10 + 1;
+		int rNum = rand() % 10 + 1000;
 		sleep(rNum);
 
 		/* aquire the full lock */
 		sem_wait(&full);
 		/* aquire the mutex lock */
 		pthread_mutex_lock(&mutex);
-		if(remove_item(&item)) {
+		if (remove_item(&item) != 0) {
 			fprintf(stderr, "Consumer report error condition\n");
 		}
 		else {
@@ -75,7 +76,6 @@ void* consumer(void *ptr) {
 
 int main(int argc, char *argv[]) {
 
-	printf("buffer size: %i\n", BUFFER_SIZE);
 	/* 1. Get command line arguments argv[1],argv[2],argv[3] */
 	if (argc != 4) {
 		printf("Incorrect number of aguments. Usage:\n");
@@ -92,12 +92,22 @@ int main(int argc, char *argv[]) {
    pthread_mutex_init(&mutex, NULL);
 
 	//create 'full' semaphore == 0
-	full = (sem_t) sem_open("full", O_CREAT);
-	printf("created full semaphore %d\n", full);
+	if (sem_init(&full, 0, 0) == -1) {
+		fprintf(stderr, "Error creating full semaphore errno %d\n", errno);
+		return -1;
+	}
+	else {
+		printf("created full semaphore %d\n", full);
+	}
 
    //create 'empty' semaphore == BUFFER_SIZE
-	empty = (sem_t) sem_open("empty", O_CREAT);
-	printf("created empty semaphore %d\n", empty);
+	if (sem_init(&empty, 0, BUFFER_SIZE) == -1) {
+		fprintf(stderr, "Error creating empty semaphore%d\n", errno);
+		return -1;
+	}
+	else {
+		printf("created empty semaphore %d\n", empty);
+	}
 
    //initialize buffer counter
    count = 0;	
@@ -118,25 +128,29 @@ int main(int argc, char *argv[]) {
 }
 
 int insert_item(buffer_item item) {
-	printf("inserting item: %i\n", item);
+	printf("inserting item: %i...", item);
    if(count < BUFFER_SIZE) {
       buffer[count] = item;
       count++;
+	   printf("...Success\n");
       return 0;
    }
    else {
+	   printf("...Failed\n");
       return -1;
    }
 }
 
 int remove_item(buffer_item *item) {
-	printf("removing item: %i\n", item);
+	printf("removing item: %i", item);
    if(count > 0) {
       *item = buffer[(count-1)];
       count--;
+	   printf("...Success\n");
       return 0;
    }
    else {
+	   printf("...Failed\n");
       return -1;
    }
 }
