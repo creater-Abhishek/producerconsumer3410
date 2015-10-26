@@ -34,10 +34,10 @@ void* producer(void *ptr) {
 		pthread_mutex_lock(&mutex);
 
 		if (insert_item(item) != 0) {
-			fprintf(stderr, " Producer report error condition\n");
+			fprintf(stderr, " Producer report error condition %d\n", errno);
 		}
 		else {
-         printf("producer produced %d\n", item);
+			printf("produced %d succesfully. wait=%d full=%d mutex=%d\n", item, wait, full, mutex);
 		}
 
 		/* release the mutex lock */
@@ -61,10 +61,10 @@ void* consumer(void *ptr) {
 		/* aquire the mutex lock */
 		pthread_mutex_lock(&mutex);
 		if (remove_item(&item) != 0) {
-			fprintf(stderr, "Consumer report error condition\n");
+			fprintf(stderr, "Consumer report error condition %d\n", errno);
 		}
 		else {
-			printf("consumer consumed %d\n", item);
+			printf("consumed %d succesfully. wait=%d full=%d mutex=%d\n", item, wait, full, mutex);
 		}
 		/* release the mutex lock */
 		pthread_mutex_unlock(&mutex);
@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
 
 	//create 'full' semaphore == 0
 	if (sem_init(&full, 0, 0) == -1) {
-		fprintf(stderr, "Error creating full semaphore errno %d\n", errno);
+		fprintf(stderr, "Error creating full semaphore %d\n", errno);
 		return -1;
 	}
 	else {
@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
 
    //create 'empty' semaphore == BUFFER_SIZE
 	if (sem_init(&empty, 0, BUFFER_SIZE) == -1) {
-		fprintf(stderr, "Error creating empty semaphore%d\n", errno);
+		fprintf(stderr, "Error creating empty semaphore %d\n", errno);
 		return -1;
 	}
 	else {
@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
 	
 	/* 3. Create producer thread(s) */
 	/* 4. Create consumer thread(s) */
-	// TODO create multple threads
+	// TODO create multiple threads
 
 	pthread_t ptid, ctid;
 	pthread_create(&ptid, NULL, producer, NULL);
@@ -128,29 +128,29 @@ int main(int argc, char *argv[]) {
 }
 
 int insert_item(buffer_item item) {
-	printf("inserting item: %i...", item);
+	printf("Producer inserting item: %i...", item);
    if(count < BUFFER_SIZE) {
       buffer[count] = item;
       count++;
-	   printf("...Success\n");
+	   printf("...Success. Count=%d\n", count);
       return 0;
    }
    else {
-	   printf("...Failed\n");
+	   printf("...Failed. Count=%d\n", count);
       return -1;
    }
 }
 
 int remove_item(buffer_item *item) {
-	printf("removing item: %i...", item);
+	printf("Consumer removing item: %i...", item);
    if(count > 0) {
       *item = buffer[(count-1)];
       count--;
-	   printf("...Success\n");
+	   printf("...Success. Count=%d\n", count);
       return 0;
    }
    else {
-	   printf("...Failed\n");
+	   printf("...Failed. Count=%d\n", count);
       return -1;
    }
 }
