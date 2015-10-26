@@ -2,6 +2,7 @@
 // Created by Steven Lyall on 15-10-26.
 //
 
+#include <stdio.h>
 #include "buffer.h"
 
 int main(int argc, char *argv[]) {
