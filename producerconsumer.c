@@ -63,7 +63,7 @@ void* consumer(void *ptr) {
 		sem_wait(&full);
 		/* aquire the mutex lock */
 		pthread_mutex_lock(&mutex);
-		if (remove_item(&item) != 0) {
+		if (remove_item(item) != 0) {
 			fprintf(stderr, "Consumer report error condition %d\n", errno);
 		}
 		else {
@@ -144,10 +144,10 @@ int insert_item(buffer_item item) {
    }
 }
 
-int remove_item(buffer_item *item) {
+int remove_item(buffer_item item) {
 	printf("Consumer removing item: %i...", item);
    if(count > 0) {
-      *item = buffer[(count-1)];
+	   item = buffer[(count - 1)];
       count--;
 	   printf("...Success. Count=%d\n", count);
       return 0;
