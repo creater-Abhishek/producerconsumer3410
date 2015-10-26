@@ -1,7 +1,3 @@
-//
-// Created by Steven Lyall on 15-10-26.
-//
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <pthread.h>
