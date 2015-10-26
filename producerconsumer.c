@@ -142,7 +142,7 @@ int insert_item(buffer_item item) {
 }
 
 int remove_item(buffer_item *item) {
-	printf("removing item: %i", item);
+	printf("removing item: %i...", item);
    if(count > 0) {
       *item = buffer[(count-1)];
       count--;
