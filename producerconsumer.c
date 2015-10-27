@@ -77,9 +77,9 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 
-	int timeToSleep = (int) argv[1];
-	int numProducerThreads = (int) argv[2];
-	int numConsumerThreads = (int) argv[3];
+	int timeToSleep = atoi(argv[1]);
+	int numProducerThreads = atoi(argv[2]);
+	int numConsumerThreads = atoi(argv[3]);
 
 
 	//create mutex
@@ -111,6 +111,7 @@ int main(int argc, char *argv[]) {
 	pthread_create(&ctid, NULL, consumer, NULL);
 	
 	/* 5. Sleep */
+	printf("Time to sleep: %i", timeToSleep);
 	sleep(timeToSleep);
 
 	// kill threads
