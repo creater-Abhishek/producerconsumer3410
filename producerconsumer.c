@@ -2,10 +2,8 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <semaphore.h>
-#include <stdio.h>
 #include <unistd.h>
 #include <sys/errno.h>
-#include <stdbool.h>
 
 #include "buffer.h"
 
@@ -37,7 +35,6 @@ void* producer(void *ptr) {
 		printf("mutex aquired: mutex=%d\n", mutex);
 
 		insert_item(item) != 0);
-		printf("produced %d succesfully. mutex=%d\n", item, mutex);
 		printf("produced %d succesfully. mutex=%d\n", item, mutex);
 
 		/* release the mutex lock */
