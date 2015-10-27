@@ -90,7 +90,9 @@ int main(int argc, char *argv[]) {
 
 	int timeToSleep = atoi(argv[1]);
 	int numProducerThreads = atoi(argv[2]);
+	printf("Producer threads %i\n", numProducerThreads);
 	int numConsumerThreads = atoi(argv[3]);
+	printf("Consumer threads %i\n", numConsumerThreads);
 
 
 	//create mutex
@@ -121,8 +123,8 @@ int main(int argc, char *argv[]) {
 
 	/* 4. Create consumer thread(s) */
 	pthread_t consumers[numConsumerThreads];
-	for (int i = 0; i < numConsumerThreads; i++) {
-		pthread_create(&consumers[i], NULL, consumer, NULL);
+	for (int j = 0; j < numConsumerThreads; j++) {
+		pthread_create(&consumers[j], NULL, consumer, NULL);
 	}
 	
 	/* 5. Sleep */
