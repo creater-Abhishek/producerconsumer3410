@@ -7,6 +7,8 @@
  * COMP 3410 Lab 5
  * Jennfer Mackie and Steven Lyall
  * portions adapted from Operating System Concepts Essentials, 2nd ed
+ * References: http://cis.poly.edu/cs3224a/Code/ProducerConsumerUsingPthreads.c
+ *			   https://macboypro.wordpress.com/2009/05/25/producer-consumer-problem-using-cpthreadsbounded-buffer/
  */
 
 #include <stdlib.h>
