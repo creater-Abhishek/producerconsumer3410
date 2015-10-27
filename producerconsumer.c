@@ -150,19 +150,13 @@ int insert_item(buffer_item item) {
 int remove_item() {
 	buffer_item item;
 	
-   while(count == 0){
-	   //do nothing
-   }
+	while(count == 0){
+		//do nothing
+	}
    
-      item = buffer[out];
-	  out = (out+1) % BUFFER_SIZE;
-	  printf("Consumer removing item: %i...", item);
-      count--;
-	   printf("...Success. Count=%d\n", count);
-      return 0;
-   }
-   else {
-	   printf("...Failed. Count=%d\n", count);
-      return -1;
-   }
+    item = buffer[out];
+	out = (out+1) % BUFFER_SIZE;
+	printf("Consumer removing item: %i...", item);
+    count--;
+	printf("...Success. Count=%d\n", count);
 }
