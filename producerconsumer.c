@@ -5,12 +5,13 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/errno.h>
+#include <stdbool.h>
 
 #include "buffer.h"
 
 buffer_item buffer[BUFFER_SIZE];
 //buffer counter
-int count;
+int count, in, out;
 
 //mutex lock
 pthread_mutex_t mutex;
@@ -134,16 +135,14 @@ int main(int argc, char *argv[]) {
 
 int insert_item(buffer_item item) {
 	printf("Producer inserting item: %i...", item);
-   if(count < BUFFER_SIZE) {
-      buffer[count] = item;
-      count++;
-	   printf("...Success. Count=%d\n", count);
-      return 0;
-   }
-   else {
-	   printf("...Failed. Count=%d\n", count);
-      return -1;
-   }
+	while (true) {
+		/* produce an item in next produced */
+		while (count == BUFFER_SIZE); /* do nothing */
+
+		buffer[in] = item;
+		in = (in + 1) % BUFFER_SIZE;
+		count++;
+	}
 }
 
 int remove_item(buffer_item *item) {
