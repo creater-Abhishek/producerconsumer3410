@@ -103,20 +103,29 @@ int main(int argc, char *argv[]) {
 	out = 0;
 	
 	/* 3. Create producer thread(s) */
-	/* 4. Create consumer thread(s) */
-	// TODO create multiple threads
+	pthread_t producers[numProducerThreads];
+	for (int i = 0; i < numProducerThreads; i++) {
+		pthread_create(&producers[i], NULL, producer, NULL);
+	}
 
-	pthread_t ptid, ctid;
-	pthread_create(&ptid, NULL, producer, NULL);
-	pthread_create(&ctid, NULL, consumer, NULL);
-	
+	/* 4. Create consumer thread(s) */
+	pthread_t consumers[numConsumerThreads];
+	for (int i = 0; i < numConsumerThreads; i++) {
+		pthread_create(&consumers[i], NULL, consumers, NULL);
+	}
+
 	/* 5. Sleep */
-	printf("Time to sleep: %i", timeToSleep);
+	printf("Time to sleep: %i\n", timeToSleep);
 	sleep(timeToSleep);
 
 	// kill threads
-	pthread_kill(ptid, 0);
-	pthread_kill(ctid, 0);
+	for (int i = 0; i < numProducerThreads; i++) {
+		pthread_kill(&producers[i], 0);
+	}
+
+	for (int i = 0; i < numConsumerThreads; i++) {
+		pthread_kill(&consumers[i], 0);
+	}
 
 	/* 6. Exit */
 	return 0;
