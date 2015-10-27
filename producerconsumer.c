@@ -32,14 +32,13 @@ void* producer(void *ptr) {
 
 		//acquire mutex
 		pthread_mutex_lock(&mutex);
-		printf("mutex aquired: mutex=%d\n", mutex);
+		//printf("mutex aquired: mutex=%d\n", mutex);
 
 		insert_item(item);
-		printf("produced %d succesfully. mutex=%d\n", item, mutex);
 
 		/* release the mutex lock */
 		pthread_mutex_unlock(&mutex);
-		printf("mutex released: mutex=%d\n", mutex);
+		//printf("mutex released: mutex=%d\n", mutex);
 
 		/* signal full */
 		sem_post(&full);
@@ -47,7 +46,6 @@ void* producer(void *ptr) {
 }
 
 void* consumer(void *ptr) {
-
 
 	while(1) {
 		/* sleep for a random period of time */
@@ -59,11 +57,10 @@ void* consumer(void *ptr) {
 		/* aquire the mutex lock */
 		pthread_mutex_lock(&mutex);
 		remove_item();
-		printf("produced succesfully. mutex=%d\n", mutex);
 
 		/* release the mutex lock */
 		pthread_mutex_unlock(&mutex);
-		printf("mutex released: mutex=%d\n", mutex);
+		//printf("mutex released: mutex=%d\n", mutex);
 
 		/* signal empty */
 		sem_post(&empty);
@@ -93,17 +90,11 @@ int main(int argc, char *argv[]) {
 		fprintf(stderr, "Error creating full semaphore %d\n", errno);
 		return -1;
 	}
-	else {
-		printf("created full semaphore %d\n", full);
-	}
 
    //create 'empty' semaphore == BUFFER_SIZE
 	if (sem_init(&empty, 0, BUFFER_SIZE) == -1) {
 		fprintf(stderr, "Error creating empty semaphore %d\n", errno);
 		return -1;
-	}
-	else {
-		printf("created empty semaphore %d\n", empty);
 	}
 
 	//initialize buffer counter
