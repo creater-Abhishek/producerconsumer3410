@@ -36,7 +36,7 @@ void* producer(void *ptr) {
 		pthread_mutex_lock(&mutex);
 		printf("mutex aquired: mutex=%d\n", mutex);
 
-		insert_item(item) != 0);
+		insert_item(item);
 		printf("produced %d succesfully. mutex=%d\n", item, mutex);
 		printf("produced %d succesfully. mutex=%d\n", item, mutex);
 
