@@ -21,7 +21,7 @@ void* producer(void *ptr) {
 	buffer_item item;
 	while(1) {
 		/* sleep for a random period of time */
-		int rNum = 5;//rand() % 10 + 10; TODO make these randoms that make sense
+		int rNum = rand() % 10 + 10;
 		sleep(rNum);
 
 		//generate random number to insert
@@ -49,7 +49,7 @@ void* consumer(void *ptr) {
 
 	while(1) {
 		/* sleep for a random period of time */
-		int rNum = 10; //rand() % 10 + 1000;
+		int rNum = rand() % 10 + 10;
 		sleep(rNum);
 
 		/* aquire the full lock */
@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
 
 	int timeToSleep = atoi(argv[1]);
 	int numProducerThreads = atoi(argv[2]);
-	printf("Producer threads threads %i\n", numProducerThreads);
+	printf("Producer threads %i\n", numProducerThreads);
 	int numConsumerThreads = atoi(argv[3]);
 	printf("Consumer threads %i\n", numConsumerThreads);
 
@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 
-   //create 'empty' semaphore == BUFFER_SIZE
+	//create 'empty' semaphore == BUFFER_SIZE
 	if (sem_init(&empty, 0, BUFFER_SIZE) == -1) {
 		fprintf(stderr, "Error creating empty semaphore %d\n", errno);
 		return -1;
@@ -115,10 +115,6 @@ int main(int argc, char *argv[]) {
 	for (int j = 0; j < numConsumerThreads; j++) {
 		pthread_create(&consumers[j], NULL, consumer, NULL);
 	}
-
-	//pthread_t ptid, ctid;
-	//pthread_create(&ptid, NULL, producer, NULL);
-	//pthread_create(&ctid, NULL, consumer, NULL);
 	
 	/* 5. Sleep */
 	printf("Time to sleep: %i\n", timeToSleep);
