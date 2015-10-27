@@ -111,7 +111,6 @@ int main(int argc, char *argv[]) {
 	pthread_create(&ctid, NULL, consumer, NULL);
 	
 	/* 5. Sleep */
-	printf("Time to sleep: %i", timeToSleep);
 	sleep(timeToSleep);
 
 	// kill threads
@@ -131,7 +130,7 @@ int insert_item(buffer_item item) {
 
 	buffer[in] = item;
 	in = (in + 1) % BUFFER_SIZE;
-	printf("Producer inserting item: %i...", item);
+	printf("Thread id: %u Producer inserting item: %i...", pthread_self(), item);
 	count++;
 	printf("...Success. Count=%d\n", count);
 }
@@ -145,7 +144,7 @@ int remove_item() {
    
     item = buffer[out];
 	out = (out+1) % BUFFER_SIZE;
-	printf("Consumer removing item: %i...", item);
+	printf("Thread id: %u Consumer removing item: %i...", pthread_self(), item);
     count--;
 	printf("...Success. Count=%d\n", count);
 }
