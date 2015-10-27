@@ -85,17 +85,17 @@ int main(int argc, char *argv[]) {
 	//create mutex
    pthread_mutex_init(&mutex, NULL);
 
-//	//create 'full' semaphore == 0
-//	if (sem_init(&full, 0, 0) == -1) {
-//		fprintf(stderr, "Error creating full semaphore %d\n", errno);
-//		return -1;
-//	}
-//
-//   //create 'empty' semaphore == BUFFER_SIZE
-//	if (sem_init(&empty, 0, BUFFER_SIZE) == -1) {
-//		fprintf(stderr, "Error creating empty semaphore %d\n", errno);
-//		return -1;
-//	}
+	//create 'full' semaphore == 0
+	if (sem_init(&full, 0, 0) == -1) {
+		fprintf(stderr, "Error creating full semaphore %d\n", errno);
+		return -1;
+	}
+
+	//create 'empty' semaphore == BUFFER_SIZE
+	if (sem_init(&empty, 0, BUFFER_SIZE) == -1) {
+		fprintf(stderr, "Error creating empty semaphore %d\n", errno);
+		return -1;
+	}
 
 	//initialize buffer counter
 	count = 0;
@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
 	/* 4. Create consumer thread(s) */
 	pthread_t consumers[numConsumerThreads];
 	for (int i = 0; i < numConsumerThreads; i++) {
-		pthread_create(&consumers[i], NULL, consumers, NULL);
+		pthread_create(&consumers[i], NULL, consumer, NULL);
 	}
 	
 	/* 5. Sleep */
