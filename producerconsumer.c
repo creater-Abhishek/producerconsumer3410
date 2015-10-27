@@ -64,12 +64,9 @@ void* consumer(void *ptr) {
 		sem_wait(&full);
 		/* aquire the mutex lock */
 		pthread_mutex_lock(&mutex);
-		if (remove_item() != 0) {
-			fprintf(stderr, "Consumer report error condition %d\n", errno);
-		}
-		else {
-			printf("produced succesfully. mutex=%d\n", mutex);
-		}
+		remove_item();
+		printf("produced succesfully. mutex=%d\n", mutex);
+
 		/* release the mutex lock */
 		pthread_mutex_unlock(&mutex);
 		printf("mutex released: mutex=%d\n", mutex);
@@ -115,8 +112,8 @@ int main(int argc, char *argv[]) {
 		printf("created empty semaphore %d\n", empty);
 	}
 
-   //initialize buffer counter
-   count = 0;
+	//initialize buffer counter
+	count = 0;
 	in = 0;
 	out = 0;
 	
