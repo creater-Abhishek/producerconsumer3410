@@ -21,7 +21,7 @@ void* producer(void *ptr) {
 	buffer_item item;
 	while(1) {
 		/* sleep for a random period of time */
-		int rNum = 5;//rand() % 10 + 10; TODO make these randoms that make sense
+		int rNum = rand() % 10 + 10;
 		sleep(rNum);
 
 		//generate random number to insert
@@ -49,7 +49,7 @@ void* consumer(void *ptr) {
 
 	while(1) {
 		/* sleep for a random period of time */
-		int rNum = 10; //rand() % 10 + 1000;
+		int rNum = rand() % 10 + 10;
 		sleep(rNum);
 
 		/* aquire the full lock */
