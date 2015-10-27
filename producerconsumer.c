@@ -137,14 +137,12 @@ int main(int argc, char *argv[]) {
 
 int insert_item(buffer_item item) {
 	printf("Producer inserting item: %i...", item);
-	while (true) {
-		/* produce an item in next produced */
-		while (count == BUFFER_SIZE); /* do nothing */
-
-		buffer[in] = item;
-		in = (in + 1) % BUFFER_SIZE;
-		count++;
-	}
+	/* produce an item in next produced */
+	while (count == BUFFER_SIZE); /* do nothing */
+	buffer[in] = item;
+	in = (in + 1) % BUFFER_SIZE;
+	count++;
+	printf("...Success. Count=%d\n", count);
 }
 
 int remove_item() {
