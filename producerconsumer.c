@@ -63,6 +63,8 @@ void* consumer(void *ptr) {
 		sem_wait(&full);
 		/* aquire the mutex lock */
 		pthread_mutex_lock(&mutex);
+		printf("mutex aquired: mutex=%d\n", mutex);
+
 		if (remove_item(&item) != 0) {
 			fprintf(stderr, "Consumer report error condition %d\n", errno);
 		}
@@ -71,6 +73,8 @@ void* consumer(void *ptr) {
 		}
 		/* release the mutex lock */
 		pthread_mutex_unlock(&mutex);
+		printf("mutex released: mutex=%d\n", mutex);
+
 		/* signal empty */
 		sem_post(&empty);
 	}
@@ -86,9 +90,9 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 
-	int timeToSleep = argv[1];
-	int numProducerThreads = argv[2];
-	int numConsumerThreads = argv[3];
+	int timeToSleep = (int) argv[1];
+	int numProducerThreads = (int) argv[2];
+	int numConsumerThreads = (int) argv[3];
 
 
 	//create mutex
@@ -131,17 +135,23 @@ int main(int argc, char *argv[]) {
 }
 
 int insert_item(buffer_item item) {
+	while (count == BUFFER_SIZE) {
+		// do nothing
+	}
+	buffer[count] = item;
 	printf("Producer inserting item: %i...", item);
-   if(count < BUFFER_SIZE) {
-      buffer[count] = item;
-      count++;
-	   printf("...Success. Count=%d\n", count);
-      return 0;
-   }
-   else {
-	   printf("...Failed. Count=%d\n", count);
-      return -1;
-   }
+
+
+//   if(count < BUFFER_SIZE) {
+//
+//      count++;
+//	   printf("...Success. Count=%d\n", count);
+//      return 0;
+//   }
+//   else {
+//	   printf("...Failed. Count=%d\n", count);
+//      return -1;
+//   }
 }
 
 int remove_item(buffer_item *item) {
