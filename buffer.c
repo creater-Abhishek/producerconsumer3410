@@ -1,3 +1,11 @@
+/**
+ * buffer.c
+ *
+ * COMP 3410 Lab 5
+ * Jennfer Mackie and Steven Lyall
+ * portions adapted from Operating System Concepts Essentials, 2nd ed
+ */
+
 //#include "buffer.h"
 //
 ///* the buffer */

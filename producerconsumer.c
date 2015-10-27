@@ -1,3 +1,14 @@
+/**
+ * producerconsumer.c
+ *
+ * A solution to the producer-consumer problem with a bounded-buffer using counting semaphores and mutex
+ * locks, for a number of threads provided by user.
+ *
+ * COMP 3410 Lab 5
+ * Jennfer Mackie and Steven Lyall
+ * portions adapted from Operating System Concepts Essentials, 2nd ed
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <pthread.h>
