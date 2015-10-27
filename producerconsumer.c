@@ -122,6 +122,10 @@ int main(int argc, char *argv[]) {
 	/* 5. Sleep */
 	sleep(timeToSleep);
 
+	// kill threads
+	pthread_kill(ptid, 0);
+	pthread_kill(ctid, 0);
+
 	/* 6. Exit */
 	return 0;
 }
