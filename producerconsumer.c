@@ -10,7 +10,7 @@
 
 buffer_item buffer[BUFFER_SIZE];
 //buffer counter
-int count;
+int count, in, out;
 
 //mutex lock
 pthread_mutex_t mutex;
@@ -52,7 +52,7 @@ void* producer(void *ptr) {
 }
 
 void* consumer(void *ptr) {
-	buffer_item item;
+
 
 	while(1) {
 		/* sleep for a random period of time */
@@ -63,11 +63,11 @@ void* consumer(void *ptr) {
 		sem_wait(&full);
 		/* aquire the mutex lock */
 		pthread_mutex_lock(&mutex);
-		if (remove_item(&item) != 0) {
+		if (remove_item() != 0) {
 			fprintf(stderr, "Consumer report error condition %d\n", errno);
 		}
 		else {
-			printf("produced %d succesfully. mutex=%d\n", item, mutex);
+			printf("produced succesfully. mutex=%d\n", mutex);
 		}
 		/* release the mutex lock */
 		pthread_mutex_unlock(&mutex);
@@ -115,7 +115,9 @@ int main(int argc, char *argv[]) {
 	}
 
    //initialize buffer counter
-   count = 0;	
+   count = 0;
+	in = 0;
+	out = 0;
 	
 	/* 3. Create producer thread(s) */
 	/* 4. Create consumer thread(s) */
@@ -146,10 +148,16 @@ int insert_item(buffer_item item) {
    }
 }
 
-int remove_item(buffer_item *item) {
-	printf("Consumer removing item: %i...", item);
-   if(count > 0) {
-      *item = buffer[(count-1)];
+int remove_item() {
+	buffer_item item;
+	
+   while(count == 0){
+	   //do nothing
+   }
+   
+      item = buffer[out];
+	  out = (out+1) % BUFFER_SIZE;
+	  printf("Consumer removing item: %i...", item);
       count--;
 	   printf("...Success. Count=%d\n", count);
       return 0;
