@@ -19,8 +19,7 @@
 #include "buffer.h"
 
 buffer_item buffer[BUFFER_SIZE];
-//buffer counter
-int count, in, out;
+int count, in, out = 0;
 
 //mutex lock
 pthread_mutex_t mutex;
@@ -29,6 +28,7 @@ pthread_mutex_t mutex;
 sem_t full, empty;
 
 void* producer(void *ptr) {
+
 	buffer_item item;
 	while(1) {
 		/* sleep for a random period of time */
@@ -109,11 +109,6 @@ int main(int argc, char *argv[]) {
 		fprintf(stderr, "Error creating empty semaphore %d\n", errno);
 		return -1;
 	}
-
-	//initialize buffer counter
-	count = 0;
-	in = 0;
-	out = 0;
 	
 	/* 3. Create producer thread(s) */
 	pthread_t producers[numProducerThreads];
