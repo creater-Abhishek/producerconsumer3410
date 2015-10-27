@@ -36,12 +36,9 @@ void* producer(void *ptr) {
 		pthread_mutex_lock(&mutex);
 		printf("mutex aquired: mutex=%d\n", mutex);
 
-		if (insert_item(item) != 0) {
-			fprintf(stderr, " Producer report error condition %d\n", errno);
-		}
-		else {
-			printf("produced %d succesfully. mutex=%d\n", item, mutex);
-		}
+		insert_item(item) != 0);
+		printf("produced %d succesfully. mutex=%d\n", item, mutex);
+		printf("produced %d succesfully. mutex=%d\n", item, mutex);
 
 		/* release the mutex lock */
 		pthread_mutex_unlock(&mutex);
@@ -136,11 +133,15 @@ int main(int argc, char *argv[]) {
 }
 
 int insert_item(buffer_item item) {
-	printf("Producer inserting item: %i...", item);
+
 	/* produce an item in next produced */
-	while (count == BUFFER_SIZE); /* do nothing */
+	while (count == BUFFER_SIZE) {
+		/* do nothing */
+	}
+
 	buffer[in] = item;
 	in = (in + 1) % BUFFER_SIZE;
+	printf("Producer inserting item: %i...", item);
 	count++;
 	printf("...Success. Count=%d\n", count);
 }
